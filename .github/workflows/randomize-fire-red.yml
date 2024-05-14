@@ -10,10 +10,13 @@ jobs:
           with:
             distribution: 'oracle'
             java-version: '21'
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.FIRERED }}'
         - run: unzip ./original/rom.zip -d ./original
         - run: mv './original/Pokemon - FireRed Version (USA, Europe) (Rev 1).gba' ./original/rom.gba
         - run: mkdir -p ./randomized
         - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/randomized-red${{ steps.date.outputs.date }} -s ./universalpokemonrandomizer/test.rnqs
-        - run: ls -la
+        - run: ls -la && ls -la ./randomized
