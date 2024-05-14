@@ -12,7 +12,7 @@ jobs:
             java-version: '21'
         - run: mkdir ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.FIRERED }}'
-        - run: unzip ./original/rom.zip -d ./original/rom.gba
+        - run: unzip ./original/rom.zip -f ./original/rom.gba
         - run: ls -la
         - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized-red -s ./universalpokemonrandomizer/test.rnqs
         - run: ls -la
