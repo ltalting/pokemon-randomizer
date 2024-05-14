@@ -23,3 +23,5 @@ jobs:
         - run: ls -la && ls -la ./randomized
         - name: Commit & Push changes
           uses: actions-js/push@master
+          with:
+            github_token: ${{ secrets.TOKEN }}
