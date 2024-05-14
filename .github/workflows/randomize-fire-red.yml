@@ -6,4 +6,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/setup-java@v4
+          with:
+            distribution: 'oracle'
+            version: '21'
         - run: java -version
