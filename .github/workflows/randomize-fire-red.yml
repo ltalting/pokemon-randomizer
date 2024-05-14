@@ -14,5 +14,5 @@ jobs:
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.FIRERED }}'
         - run: unzip ./original/rom.zip -d ./original
         - run: mv './original/Pokemon - FireRed Version (USA, Europe) (Rev 1).gba' ./original/rom.gba
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized-red -s ./universalpokemonrandomizer/test.rnqs
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/randomized-red${{ steps.date.outputs.date }} -s ./universalpokemonrandomizer/test.rnqs
         - run: ls -la
