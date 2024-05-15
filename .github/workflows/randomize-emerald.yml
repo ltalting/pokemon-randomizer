@@ -23,6 +23,7 @@ jobs:
           run: echo "::set-output name=romname::randomized-emerald${{ steps.date.outputs.date }}"
         - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/emerald/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
         - run: cd ./randomized/emerald
+        - run: ls -la
         - run: zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gba
         - run: rm -f ${{ steps.romname.outputs.romname }}.gba
         - run: cd ../../
