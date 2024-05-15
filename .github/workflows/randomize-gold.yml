@@ -16,7 +16,7 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.GOLD }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - Gold Version (USA, Europe) (SGB Enhanced) (GB Compatible).gb' ./original/rom.gbc
+        - run: mv './original/Pokemon - Gold Version (USA, Europe) (SGB Enhanced) (GB Compatible).gbc' ./original/rom.gbc
         - run: mkdir -p ./randomized/gold
         - name: Generate ROM name
           id: romname

@@ -22,7 +22,7 @@ jobs:
           id: romname
           run: echo "::set-output name=romname::randomized-red${{ steps.date.outputs.date }}"
         - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gb -o ./randomized/red/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
-        - run: cd ./randomized/red && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gb && rm -f ${{ steps.romname.outputs.romname }}.gb
+        - run: cd ./randomized/red && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gbc && rm -f ${{ steps.romname.outputs.romname }}.gbc
         - run: rm -rf ./original
         - name: Commit & Push changes
           uses: actions-js/push@master
