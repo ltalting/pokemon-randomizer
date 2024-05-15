@@ -1,2 +1,0 @@
-### https://github.com/Ajarmar/universal-pokemon-randomizer-zx/wiki/CLI-Randomizer#cli-randomizer
-java -jar .\PokeRandoZX.jar cli -i '..\original\Pokemon - Fire Red Version .gba' -o .\randomized-red -s .\test.rnqs
