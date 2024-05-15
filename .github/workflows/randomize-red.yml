@@ -1,0 +1,31 @@
+name: Create Randomized Red
+on: ["workflow_dispatch"]
+
+jobs:
+    create-randomized-red:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-java@v4
+          with:
+            distribution: 'oracle'
+            java-version: '21'
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
+        - run: mkdir -p ./original
+        - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.RED }}'
+        - run: unzip ./original/rom.zip -d ./original
+        - run: mv './original/Pokemon - Red Version (USA, Europe) (SGB Enhanced)' ./original/rom.gb
+        - run: mkdir -p ./randomized/red
+        - name: Generate ROM name
+          id: romname
+          run: echo "::set-output name=romname::randomized-red${{ steps.date.outputs.date }}"
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gb -o ./randomized/red/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: cd ./randomized/red && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gb && rm -f ${{ steps.romname.outputs.romname }}.gb
+        - run: rm -rf ./original
+        - name: Commit & Push changes
+          uses: actions-js/push@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: 'main'
