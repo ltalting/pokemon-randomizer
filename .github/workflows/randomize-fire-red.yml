@@ -18,7 +18,7 @@ jobs:
         - run: unzip ./original/rom.zip -d ./original
         - run: mv './original/Pokemon - FireRed Version (USA, Europe) (Rev 1).gba' ./original/rom.gba
         - run: mkdir -p ./randomized/firered
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/randomized-firered${{ steps.date.outputs.date }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/firered/randomized-firered${{ steps.date.outputs.date }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
         - run: rm -rf ./original
         - run: ls -la && ls -la ./randomized
         - name: Commit & Push changes
