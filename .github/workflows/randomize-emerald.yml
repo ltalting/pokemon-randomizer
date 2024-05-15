@@ -27,7 +27,6 @@ jobs:
         - run: rm -f ${{ steps.romname.outputs.romname }}.gba
         - run: cd ../../
         - run: rm -rf ./original
-        - run: ls -la && ls -la ./randomized
         - name: Commit & Push changes
           uses: actions-js/push@master
           with:
