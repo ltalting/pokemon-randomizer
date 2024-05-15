@@ -16,7 +16,7 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.BLUE }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - Blue Version (USA, Europe) (SGB Enhanced)' ./original/rom.gb
+        - run: mv './original/Pokemon - Blue Version (USA, Europe) (SGB Enhanced).gb' ./original/rom.gb
         - run: mkdir -p ./randomized/blue
         - name: Generate ROM name
           id: romname

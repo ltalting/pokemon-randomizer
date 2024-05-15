@@ -16,7 +16,7 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.CRYSTAL }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - Crystal Version (USA, Europe) (Rev 1)' ./original/rom.gbc
+        - run: mv './original/Pokemon - Crystal Version (USA, Europe) (Rev 1).gbc' ./original/rom.gbc
         - run: mkdir -p ./randomized/crystal
         - name: Generate ROM name
           id: romname

@@ -16,7 +16,7 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.SILVER }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - Silver Version (USA, Europe) (SGB Enhanced) (GB Compatible)' ./original/rom.gbc
+        - run: mv './original/Pokemon - Silver Version (USA, Europe) (SGB Enhanced) (GB Compatible).gbc' ./original/rom.gbc
         - run: mkdir -p ./randomized/silver
         - name: Generate ROM name
           id: romname

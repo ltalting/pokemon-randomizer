@@ -16,7 +16,7 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.YELLOW }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - Yellow Version - Special Pikachu Edition (USA, Europe) (CGB+SGB Enhanced)' ./original/rom.gb
+        - run: mv './original/Pokemon - Yellow Version - Special Pikachu Edition (USA, Europe) (CGB+SGB Enhanced).gb' ./original/rom.gb
         - run: mkdir -p ./randomized/yellow
         - name: Generate ROM name
           id: romname
