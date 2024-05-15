@@ -1,8 +1,8 @@
-name: Create Randomized Fire Red
+name: Create Randomized Emerald
 on: ["workflow_dispatch"]
 
 jobs:
-    create-randomized-fire-red:
+    create-randomized-emerald:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -14,15 +14,15 @@ jobs:
           id: date
           run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
         - run: mkdir -p ./original
-        - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.FIRERED }}'
+        - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.EMERALD }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - FireRed Version (USA, Europe) (Rev 1).gba' ./original/rom.gba
-        - run: mkdir -p ./randomized/firered
+        - run: mv './original/Pokemon - Emerald Version (USA, Europe).gba' ./original/rom.gba
+        - run: mkdir -p ./randomized/emerald
         - name: Generate ROM name
           id: romname
-          run: echo "::set-output name=romname::randomized-firered${{ steps.date.outputs.date }}"
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/firered/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
-        - run: cd ./randomized/firered
+          run: echo "::set-output name=romname::randomized-emerald${{ steps.date.outputs.date }}"
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/emerald/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: cd ./randomized/emerald
         - run: zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gba
         - run: rm -f ${{ steps.romname.outputs.romname }}.gba
         - run: cd ../../
