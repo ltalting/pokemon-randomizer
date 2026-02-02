@@ -1,4 +1,4 @@
-name: Create Randomized Platinum
+name: Create Randomized Heart Gold
 on: ["workflow_dispatch"]
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
           id: date
           run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
         - run: mkdir -p ./original
-        - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
+        - run: wget -O ./original/rom.zip 'https://dl3.vimm.net/?mediaId=11089'
         - run: unzip ./original/rom.zip -d ./original
         - run: mv './original/Pokemon - Platinum Version (USA) (Rev 1).nds' ./original/rom.nds
         - run: mkdir -p ./randomized/platinum
