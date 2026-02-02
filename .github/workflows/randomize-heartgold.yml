@@ -2,7 +2,7 @@ name: Create Randomized Heart Gold
 on: ["workflow_dispatch"]
 
 jobs:
-    create-randomized-platinum:
+    create-randomized-heart-gold:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -16,8 +16,8 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip 'https://dl3.vimm.net/?mediaId=11089'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - Platinum Version (USA) (Rev 1).nds' ./original/rom.nds
-        - run: mkdir -p ./randomized/platinum
+        - run: mv './original/Pokemon - HeartGold Version (USA).nds' ./original/rom.nds
+        - run: mkdir -p ./randomized/heartgold
         - name: Generate ROM name
           id: romname
           run: echo "::set-output name=romname::randomized-platinum${{ steps.date.outputs.date }}"
