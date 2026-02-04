@@ -16,7 +16,7 @@ jobs:
         - run: mkdir -p ./original
         - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.SOULSILVER }}'
         - run: unzip ./original/rom.zip -d ./original
-        - run: mv './original/Pokemon - HeartGold Version (USA).nds' ./original/rom.nds
+        - run: mv './original/Pokemon - SoulSilver Version (USA, Australia).nds' ./original/rom.nds
         - run: mkdir -p ./randomized/soulsilver
         - name: Generate ROM name
           id: romname
