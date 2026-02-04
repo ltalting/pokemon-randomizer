@@ -1,0 +1,31 @@
+name: Create Randomized Omega Ruby
+on: ["workflow_dispatch"]
+
+jobs:
+    create-randomized-omega-ruby:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-java@v4
+          with:
+            distribution: 'oracle'
+            java-version: '21'
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
+        - run: mkdir -p ./original
+        - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.OMEGARUBY }}'
+        - run: unzip ./original/rom.zip -d ./original
+        - run: mv './original/Pokemon Omega Ruby (USA) (En,Ja,Fr,De,Es,It,Ko) (Rev 2).nds' ./original/rom.3ds
+        - run: mkdir -p ./randomized/omegaruby
+        - name: Generate ROM name
+          id: romname
+          run: echo "::set-output name=romname::randomized-omegaruby${{ steps.date.outputs.date }}"
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.3ds -o ./randomized/omegaruby/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: cd ./randomized/omegaruby && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.nds && rm -f ${{ steps.romname.outputs.romname }}.nds
+        - run: rm -rf ./original
+        - name: Commit & Push changes
+          uses: actions-js/push@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: 'main'
