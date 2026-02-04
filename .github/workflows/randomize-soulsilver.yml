@@ -2,7 +2,7 @@ name: Create Randomized Soul Silver
 on: ["workflow_dispatch"]
 
 jobs:
-    create-randomized-heart-gold:
+    create-randomized-soul-silver:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
