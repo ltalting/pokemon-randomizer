@@ -14,7 +14,7 @@ jobs:
           id: date
           run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
         - run: mkdir -p ./original
-        - run: wget -O --no-check-certificate ./original/rom.zip 'https://23.237.193.34/?mediaId=11089'
+        - run: wget -O --no-check-certificate ./original/rom.zip '${{ vars.HEARTGOLD }}'
         - run: unzip ./original/rom.zip -d ./original
         - run: mv './original/Pokemon - HeartGold Version (USA).nds' ./original/rom.nds
         - run: mkdir -p ./randomized/heartgold
