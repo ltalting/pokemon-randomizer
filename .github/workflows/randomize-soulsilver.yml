@@ -1,4 +1,4 @@
-name: Create Randomized Heart Gold
+name: Create Randomized Soul Silver
 on: ["workflow_dispatch"]
 
 jobs:
