@@ -20,9 +20,9 @@ jobs:
         - run: mkdir -p ./randomized/heartgold
         - name: Generate ROM name
           id: romname
-          run: echo "::set-output name=romname::randomized-platinum${{ steps.date.outputs.date }}"
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.nds -o ./randomized/platinum/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
-        - run: cd ./randomized/platinum && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.nds && rm -f ${{ steps.romname.outputs.romname }}.nds
+          run: echo "::set-output name=romname::randomized-heartgold${{ steps.date.outputs.date }}"
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.nds -o ./randomized/heartgold/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: cd ./randomized/heartgold && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.nds && rm -f ${{ steps.romname.outputs.romname }}.nds
         - run: rm -rf ./original
         - name: Commit & Push changes
           uses: actions-js/push@master
