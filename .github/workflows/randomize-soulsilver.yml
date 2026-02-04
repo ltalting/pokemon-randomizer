@@ -1,0 +1,31 @@
+name: Create Randomized Heart Gold
+on: ["workflow_dispatch"]
+
+jobs:
+    create-randomized-heart-gold:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-java@v4
+          with:
+            distribution: 'oracle'
+            java-version: '21'
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d-%s.%N')"
+        - run: mkdir -p ./original
+        - run: wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.SOULSILVER }}'
+        - run: unzip ./original/rom.zip -d ./original
+        - run: mv './original/Pokemon - HeartGold Version (USA).nds' ./original/rom.nds
+        - run: mkdir -p ./randomized/soulsilver
+        - name: Generate ROM name
+          id: romname
+          run: echo "::set-output name=romname::randomized-soulsilver${{ steps.date.outputs.date }}"
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.nds -o ./randomized/soulsilver/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: cd ./randomized/soulsilver && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.nds && rm -f ${{ steps.romname.outputs.romname }}.nds
+        - run: rm -rf ./original
+        - name: Commit & Push changes
+          uses: actions-js/push@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: 'main'
