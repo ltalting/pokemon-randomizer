@@ -21,7 +21,7 @@ jobs:
         - name: Generate ROM name
           id: romname
           run: echo "::set-output name=romname::randomized-omegaruby${{ steps.date.outputs.date }}"
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.3ds -o ./randomized/omegaruby/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: java -Xmx4608M -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.3ds -o ./randomized/omegaruby/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
         - run: cd ./randomized/omegaruby && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.3ds && rm -f ${{ steps.romname.outputs.romname }}.3ds
         - run: rm -rf ./original
         - name: Commit & Push changes
