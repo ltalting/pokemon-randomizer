@@ -22,7 +22,9 @@ jobs:
           id: romname
           run: echo "::set-output name=romname::randomized-omegaruby${{ steps.date.outputs.date }}"
         - run: java -Xmx4608M -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.3ds -o ./randomized/omegaruby/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
-        - run: ls./original && ls ./randomized
+        - run: ls -la
+        - run: ls ./randomized
+        - run: ls ./original
         - run: |
             cd ./randomized/omegaruby
             zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.3ds
