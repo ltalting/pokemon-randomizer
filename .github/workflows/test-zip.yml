@@ -51,9 +51,13 @@ jobs:
 
           media = MediaFileUpload("artifact.zip", mimetype="application/zip")
 
-          file = service.files().create(
-              body=file_metadata,
-              media_body=media,
+          service.files().create(
+              body={
+                  "name": "artifact.zip",
+                  "parents": [os.environ["FOLDER_ID"]],
+              },
+              media_body=MediaFileUpload("artifact.zip", mimetype="application/zip"),
+              supportsAllDrives=True,
               fields="id"
           ).execute()
 
