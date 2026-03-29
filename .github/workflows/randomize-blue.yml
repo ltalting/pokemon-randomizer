@@ -29,6 +29,13 @@ jobs:
         #   with:
         #     github_token: ${{ secrets.GITHUB_TOKEN }}
         #     branch: 'main'
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.11'
+
+        - name: Install dependencies
+          run: pip install google-api-python-client google-auth
         - name: Upload to Google Drive
           env:
             FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
