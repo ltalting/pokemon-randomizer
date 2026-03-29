@@ -21,7 +21,7 @@ jobs:
         - name: Generate ROM name
           id: romname
           run: echo "::set-output name=romname::randomized-red${{ steps.date.outputs.date }}"
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gb -o ./randomized/red/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings.rnqs
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gb -o ./randomized/red/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs
         - run: cd ./randomized/red && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gbc && rm -f ${{ steps.romname.outputs.romname }}.gbc
         - run: rm -rf ./original
         - name: Commit & Push changes
