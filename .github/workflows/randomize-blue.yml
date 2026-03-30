@@ -74,7 +74,7 @@ jobs:
                 fields = "id, name, mimeType"
             ).execute()
 
-            media = MediaFileUpload("zip_name, mimetype = "application/zip")
+            media = MediaFileUpload("./randomized/" + zip_name, mimetype = "application/zip")
 
             service.files().create(
                 body = file_metadata,
