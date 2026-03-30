@@ -39,7 +39,7 @@ jobs:
         - run: ls -la
         - name: Upload to Google Drive
           env:
-            FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+            FOLDER_ID: ${{ secrets.BLUE_FOLDER_ID }}
             REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
             CLIENT_ID: ${{ secrets.CLIENT_ID }}
             CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
