@@ -21,11 +21,64 @@ jobs:
         - name: Generate ROM name
           id: romname
           run: echo "::set-output name=romname::randomized-emerald${{ steps.date.outputs.date }}"
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/emerald/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs
-        - run: cd ./randomized/emerald && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gba && rm -f ${{ steps.romname.outputs.romname }}.gba
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.gba -o ./randomized/${{ steps.romname.outputs.romname }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs
+        - run: cd ./randomized && zip ${{ steps.romname.outputs.romname }}.zip ${{ steps.romname.outputs.romname }}.gba && rm -f ${{ steps.romname.outputs.romname }}.gba
         - run: rm -rf ./original
-        - name: Commit & Push changes
-          uses: actions-js/push@master
+        # - name: Commit & Push changes
+        #   uses: actions-js/push@master
+        #   with:
+        #     github_token: ${{ secrets.GITHUB_TOKEN }}
+        #     branch: 'main'
+        - name: Set up Python
+          uses: actions/setup-python@v5
           with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: 'main'
+            python-version: '3.11'
+        
+        - name: Install dependencies
+          run: pip install google-api-python-client google-auth
+        - run: ls -la
+        - name: Upload to Google Drive
+          env:
+            FOLDER_ID: ${{ secrets.EMERALD_FOLDER_ID }}
+            REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+            CLIENT_ID: ${{ secrets.CLIENT_ID }}
+            CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+            ROM_NAME: ${{ steps.romname.outputs.romname }}
+          run: |
+            python << 'EOF'
+            import os
+            from google.oauth2.credentials import Credentials
+            from googleapiclient.discovery import build
+            from googleapiclient.http import MediaFileUpload
+
+            creds = Credentials(
+                token = None,
+                refresh_token = os.environ.get("REFRESH_TOKEN"),
+                token_uri = "https://oauth2.googleapis.com/token",
+                client_id = os.environ.get("CLIENT_ID"),
+                client_secret = os.environ.get("CLIENT_SECRET"),
+                scopes = ["https://www.googleapis.com/auth/drive"]
+            )
+
+            service = build("drive", "v3", credentials=creds)
+
+            zip_name = os.environ.get("ROM_NAME") + ".zip"
+
+            file_metadata = {
+                "name": zip_name,
+                "parents": [os.environ.get("FOLDER_ID")] if os.environ.get("FOLDER_ID") else []
+            }
+
+            folder = service.files().get(
+                fileId = os.environ.get("FOLDER_ID") if os.environ.get("FOLDER_ID") else "",
+                fields = "id, name, mimeType"
+            ).execute()
+
+            media = MediaFileUpload("./randomized/" + zip_name, mimetype = "application/zip")
+
+            service.files().create(
+                body = file_metadata,
+                media_body = media,
+                fields = "id"
+            ).execute()
+            EOF
