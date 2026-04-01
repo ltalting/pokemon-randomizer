@@ -14,18 +14,21 @@ jobs:
           run: |
             # Set flavor
             echo "::set-output name=FLAVOR::platinum"
+
+            # Set extension
+            echo "::set-output name=EXTENSION::.nds"
             
             # Generate and set datenow
             echo "::set-output name=DATENOW::$(date +'%Y-%m-%d-%s.%N')"
 
             # Generate and set zipname
-            echo "::set-output name=ZIPNAME::randomized-$FLAVOR$DATENOW"
+            echo "::set-output name=ZIPNAME::randomized-$FLAVOR$DATENOW.zip"
 
             # Handle outputfilename input
-            INPUT_VAL="${{ github.event.inputs['Output File Name'] }}"
+            INPUT_VAL="${{ github.event.inputs['Output File Name'] }}$EXTENSION"
             # If input is empty, use zipname
             if [ -z "$INPUT_VAL" ]; then
-              INPUT_VAL=$ZIPNAME
+              INPUT_VAL="$ZIPNAME$EXTENSION"
             fi
 
             # This will be the name of the file in the zip
@@ -36,21 +39,18 @@ jobs:
             mkdir -p ./original
             wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
             unzip ./original/rom.zip -d ./original
-            mv './original/Pokemon - Platinum Version (USA) (Rev 1).nds' ./original/rom.nds
-            mkdir -p ./randomized/platinum
+            mv './original/Pokemon - Platinum Version (USA) (Rev 1)${{ steps.variables.outputs.EXTENSION }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
         - name: Setup java
           uses: actions/setup-java@v4
           with:
             distribution: 'oracle'
             java-version: '21'
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom.nds -o ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs
-        - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }}.zip ${{ steps.variables.outputs.OUTPUTFILENAME }}.nds && rm -f ${{ steps.variables.outputs.OUTPUTFILENAME}}.nds
-        - run: rm -rf ./original
-        # - name: Commit & Push changes
-        #   uses: actions-js/push@master
-        #   with:
-        #     github_token: ${{ secrets.GITHUB_TOKEN }}
-        #     branch: 'main'
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom${{ steps.variables.outputs.EXTENSION }} -o ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs -l
+        - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }}.zip ${{ steps.variables.outputs.OUTPUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTPUTFILENAME}}
+        - run: |
+            rm -rf ./original
+            mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
+            mv ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTPUTFILENAME }}.log
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
@@ -65,7 +65,7 @@ jobs:
             REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
             CLIENT_ID: ${{ secrets.CLIENT_ID }}
             CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-            ROM_NAME: ${{ steps.variables.outputs.ROMNAME }}
+            ZIP_NAME: ${{ steps.variables.outputs.ZIPNAME }}
           run: |
             python << 'EOF'
             import os
@@ -84,7 +84,7 @@ jobs:
 
             service = build("drive", "v3", credentials=creds)
 
-            zip_name = os.environ.get("ROM_NAME") + ".zip"
+            zip_name = os.environ.get("ZIP_NAME")
 
             file_metadata = {
                 "name": zip_name,
@@ -104,3 +104,9 @@ jobs:
                 fields = "id"
             ).execute()
             EOF
+        - run: rm -f ./randomized/${{ steps.variables.outputs.ZIPNAME }}
+        - name: Commit & Push changes
+          uses: actions-js/push@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: 'main'
