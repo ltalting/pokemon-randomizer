@@ -14,15 +14,19 @@ jobs:
           run: |
             # Set flavor
             echo "::set-output name=FLAVOR::platinum"
+            echo $FLAVOR
 
             # Set extension
             echo "::set-output name=EXTENSION::.nds"
+            echo $EXTENSION
             
             # Generate and set datenow
             echo "::set-output name=DATENOW::$(date +'%Y-%m-%d-%s.%N')"
+            echo $DATENOW
 
             # Generate and set zipname
             echo "::set-output name=ZIPNAME::randomized-$FLAVOR$DATENOW.zip"
+            echo $ZIPNAME
 
             # Handle outputfilename input
             INPUT_VAL="${{ github.event.inputs['Output File Name'] }}$EXTENSION"
@@ -30,6 +34,8 @@ jobs:
             if [ -z "$INPUT_VAL" ]; then
               INPUT_VAL="$ZIPNAME$EXTENSION"
             fi
+
+            echo $INPUT_VAL
 
             # This will be the name of the file in the zip
             echo "::set-output name=OUTPUTFILENAME::$INPUT_VAL"
