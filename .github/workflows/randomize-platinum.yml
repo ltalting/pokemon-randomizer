@@ -41,7 +41,7 @@ jobs:
               # Otherwise, use input
               echo "OUTFILENAME=$OUTFILENAME$EXTENSION" >> GITHUB_OUTPUT
               # Update zip name as well
-              echo "ZIPNAME=randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip
+              echo "ZIPNAME=randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip"
             fi
             echo "$OUTFILENAME"
             echo "$ZIPNAME"
