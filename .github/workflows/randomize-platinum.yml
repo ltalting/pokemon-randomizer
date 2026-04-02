@@ -39,7 +39,7 @@ jobs:
               OUTFILENAME="${ZIPNAME}"
             else
               # Otherwise, use input
-              OUTFILENAME="${INPUTVAL}${EXTENSION}"
+              OUTFILENAME="${INPUTVAL}"
               # Update zip name as well
               ZIPNAME="randomized-${FLAVOR}${DATENOW}[${OUTFILENAME}].zip"
             fi
