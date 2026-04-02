@@ -52,7 +52,7 @@ jobs:
         - run: |
             mkdir -p ./original
             wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
-            la -la
+            ls -la
             pwd
             unzip ./original/rom.zip -d ./original
             mv './original/Pokemon - Platinum Version (USA) (Rev 1)${{ steps.variables.outputs.EXTENSION }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
