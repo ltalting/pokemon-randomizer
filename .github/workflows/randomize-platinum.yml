@@ -31,20 +31,24 @@ jobs:
             ZIPNAME="randomized-${FLAVOR}${DATENOW}.zip"
             # Initialize outfilename
             OUTFILENAME=""
+            OUTFILENAMEEXT=""
             # Handle outputfilename input
             INPUTVAL="${{ github.event.inputs['Output File Name'] }}"
             # If input is empty, use zipname
             if [ -z "$INPUTVAL" ]; then
-              OUTFILENAME="${ZIPNAME}${EXTENSION}"
+              OUTFILENAME="${ZIPNAME}"
             else
               # Otherwise, use input
               OUTFILENAME="${INPUTVAL}${EXTENSION}"
               # Update zip name as well
               ZIPNAME="randomized-${FLAVOR}${DATENOW}[${OUTFILENAME}].zip"
             fi
+            OUTFILENAMEEXT="${OUTFILENAME}${EXTENSION}"
             
             echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
             echo "out file name = $OUTFILENAME"
+            echo "OUTFILENAMEEXT=$OUTFILENAMEEXT" >> "$GITHUB_OUTPUT"
+            echo "out file name = $OUTFILENAMEEXT"
             echo "ZIPNAME=$ZIPNAME" >> "$GITHUB_OUTPUT"
             echo "zip name = $ZIPNAME"
 
@@ -64,7 +68,7 @@ jobs:
         - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }} ${{ steps.variables.outputs.OUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTFILENAME}}
         - run: |
             rm -rf ./original
-            mv ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTFILENAME }}.log
+            mv ./randomized/${{ steps.variables.outputs.OUTPUTFILENAMEEXT }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTFILENAMEEXT }}.log
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
