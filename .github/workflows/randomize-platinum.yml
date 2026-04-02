@@ -120,7 +120,7 @@ jobs:
                 fields = "id"
             ).execute()
             EOF
-        - run: rm -f ./randomized/$zip_name
+        - run: rm -f ./randomized/${{ steps.variables.outputs.ZIPNAME }}
         - name: Commit & Push changes
           uses: actions-js/push@master
           with:
