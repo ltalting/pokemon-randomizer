@@ -30,18 +30,20 @@ jobs:
             # Generate zipname
             ZIPNAME="randomized-${FLAVOR}${DATENOW}.zip"
             echo "ZIPNAME=$ZIPNAME" >> "$GITHUB_OUTPUT"
-            echo "zip name = $ZIPNAME"
 
             # Handle outputfilename input
             INPUTVAL="${{ github.event.inputs['Output File Name'] }}$EXTENSION"
             # If input is empty, use zipname
             if [ -z "$INPUTVAL" ]; then
-              echo "OUTFILENAME=$ZIPNAME$EXTENSION" >> "$GITHUB_OUTPUT"
+              OUTFILENAME="${ZIPNAME}${EXTENSION}"
+              echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
             else
               # Otherwise, use input
-              echo "OUTFILENAME=$INPUTVAL$EXTENSION" >> "$GITHUB_OUTPUT"
+              OUTFILENAME="${INPUTVAL}${EXTENSION}"
+              echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
               # Update zip name as well
-              echo "ZIPNAME=randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip" >> "$GITHUB_OUTPUT"
+              NEWZIPNAME="randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip"
+              echo "ZIPNAME=$NEWZIPNAME" >> "$GITHUB_OUTPUT"
             fi
             echo "$OUTFILENAME"
             echo "$ZIPNAME"
