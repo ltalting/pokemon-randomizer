@@ -29,7 +29,6 @@ jobs:
 
             # Generate zipname
             ZIPNAME="randomized-${FLAVOR}${DATENOW}.zip"
-            echo "ZIPNAME=$ZIPNAME" >> "$GITHUB_OUTPUT"
             # Initialize outfilename
             OUTFILENAME=""
             # Handle outputfilename input
@@ -37,7 +36,6 @@ jobs:
             # If input is empty, use zipname
             if [ -z "$INPUTVAL" ]; then
               OUTFILENAME="${ZIPNAME}${EXTENSION}"
-              echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
             else
               # Otherwise, use input
               OUTFILENAME="${INPUTVAL}${EXTENSION}"
