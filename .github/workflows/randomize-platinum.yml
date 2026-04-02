@@ -55,6 +55,7 @@ jobs:
         - uses: actions/checkout@v4
         - run: |
             mkdir -p ./original
+            mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
             wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
             unzip ./original/rom.zip -d ./original
             mv './original/Pokemon - Platinum Version (USA)${{ steps.variables.outputs.EXTENSION }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
@@ -64,7 +65,6 @@ jobs:
             distribution: 'oracle'
             java-version: '21'
         - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom${{ steps.variables.outputs.EXTENSION }} -o ./randomized/${{ steps.variables.outputs.OUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs -l
-        - run: mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
         - run: ls -la ./randomized
         - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }} ${{ steps.variables.outputs.OUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTFILENAME}}
         - run: |
