@@ -59,12 +59,12 @@ jobs:
           with:
             distribution: 'oracle'
             java-version: '21'
-        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom${{ steps.variables.outputs.EXTENSION }} -o ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs -l
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom${{ steps.variables.outputs.EXTENSION }} -o ./randomized/${{ steps.variables.outputs.OUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs -l
         - run: mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
-        - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }} ${{ steps.variables.outputs.OUTPUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTPUTFILENAME}}
+        - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }} ${{ steps.variables.outputs.OUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTFILENAME}}
         - run: |
             rm -rf ./original
-            mv ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTPUTFILENAME }}.log
+            mv ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTFILENAME }}.log
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
