@@ -53,7 +53,7 @@ jobs:
             mkdir -p ./original
             wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
             unzip ./original/rom.zip -d ./original
-            mv './original/Pokemon - Platinum Version (USA) (Rev 1)${{ steps.variables.outputs.EXTENSION }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
+            mv './original/Pokemon - Platinum Version (USA)${{ steps.variables.outputs.EXTENSION }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
         - name: Setup java
           uses: actions/setup-java@v4
           with:
