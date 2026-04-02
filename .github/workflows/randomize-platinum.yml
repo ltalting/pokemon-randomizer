@@ -14,17 +14,17 @@ jobs:
           run: |
             # Set flavor
             FLAVOR="platinum"
-            echo "FLAVOR=$FLAVOR" >> "$GITHUB_OUTPUT"
+            echo "FLAVOR=${FLAVOR}" >> "$GITHUB_OUTPUT"
             echo "flavor = $FLAVOR"
 
             # Set extension
             EXTENSION=".nds"
-            echo "EXTENSION=$EXTENSION" >> "$GITHUB_OUTPUT"
+            echo "EXTENSION=${EXTENSION}" >> "$GITHUB_OUTPUT"
             echo "extension = $EXTENSION"
 
             # Generate datenow
             DATENOW="$(date +'%Y-%m-%d-%s.%N')"
-            echo "DATENOW=$DATENOW" >> "$GITHUB_OUTPUT"
+            echo "DATENOW=${DATENOW}" >> "$GITHUB_OUTPUT"
             echo "date now = $DATENOW"
 
             # Generate zipname
@@ -32,7 +32,7 @@ jobs:
             echo "ZIPNAME=$ZIPNAME" >> "$GITHUB_OUTPUT"
 
             # Handle outputfilename input
-            INPUTVAL="${{ github.event.inputs['Output File Name'] }}$EXTENSION"
+            INPUTVAL="${{ github.event.inputs['Output File Name'] }}"
             # If input is empty, use zipname
             if [ -z "$INPUTVAL" ]; then
               OUTFILENAME="${ZIPNAME}${EXTENSION}"
@@ -42,7 +42,7 @@ jobs:
               OUTFILENAME="${INPUTVAL}${EXTENSION}"
               echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
               # Update zip name as well
-              NEWZIPNAME="randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip"
+              NEWZIPNAME="randomized-${FLAVOR}${DATENOW}[${OUTFILENAME}].zip"
               echo "ZIPNAME=$NEWZIPNAME" >> "$GITHUB_OUTPUT"
             fi
             echo "$OUTFILENAME"
