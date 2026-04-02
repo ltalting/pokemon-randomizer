@@ -60,7 +60,7 @@ jobs:
             distribution: 'oracle'
             java-version: '21'
         - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom${{ steps.variables.outputs.EXTENSION }} -o ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs -l
-        - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }}.zip ${{ steps.variables.outputs.OUTPUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTPUTFILENAME}}
+        - run: ls && cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }}.zip ${{ steps.variables.outputs.OUTPUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTPUTFILENAME}}
         - run: |
             rm -rf ./original
             mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
