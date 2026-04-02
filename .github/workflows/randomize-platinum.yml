@@ -33,15 +33,15 @@ jobs:
             echo "zip name = $ZIPNAME"
 
             # Handle outputfilename input
-            OUTFILENAME="${{ github.event.inputs['Output File Name'] }}$EXTENSION"
+            INPUTVAL="${{ github.event.inputs['Output File Name'] }}$EXTENSION"
             # If input is empty, use zipname
-            if [ -z "$OUTFILENAME" ]; then
-              OUTFILENAME="$ZIPNAME$EXTENSION"
+            if [ -z "$INPUTVAL" ]; then
+              echo "OUTFILENAME=$ZIPNAME$EXTENSION" >> "$GITHUB_OUTPUT"
             else
               # Otherwise, use input
-              echo "OUTFILENAME=$OUTFILENAME$EXTENSION" >> GITHUB_OUTPUT
+              echo "OUTFILENAME=$INPUTVAL$EXTENSION" >> "$GITHUB_OUTPUT"
               # Update zip name as well
-              echo "ZIPNAME=randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip"
+              echo "ZIPNAME=randomized-${FLAVOR}${DATENOW}[$OUTFILENAME].zip" >> "$GITHUB_OUTPUT"
             fi
             echo "$OUTFILENAME"
             echo "$ZIPNAME"
