@@ -41,12 +41,13 @@ jobs:
             else
               # Otherwise, use input
               OUTFILENAME="${INPUTVAL}${EXTENSION}"
-              echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
               # Update zip name as well
-              NEWZIPNAME="randomized-${FLAVOR}${DATENOW}[${OUTFILENAME}].zip"
-              echo "ZIPNAME=$NEWZIPNAME" >> "$GITHUB_OUTPUT"
+              ZIPNAME="randomized-${FLAVOR}${DATENOW}[${OUTFILENAME}].zip"
             fi
+            
+            echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
             echo "out file name = $OUTFILENAME"
+            echo "ZIPNAME=$ZIPNAME" >> "$GITHUB_OUTPUT"
             echo "zip name = $ZIPNAME"
 
         # - uses: actions/checkout@v4
