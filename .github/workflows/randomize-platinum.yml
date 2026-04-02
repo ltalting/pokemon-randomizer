@@ -66,7 +66,7 @@ jobs:
         - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }} ${{ steps.variables.outputs.OUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTFILENAME }}
         - run: |
             rm -rf ./original
-            mv ./randomized/${{ steps.variables.outputs.OUTPUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTFILENAME }}.log
+            mv ./randomized/${{ steps.variables.outputs.OUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.OUTFILENAME }}.log
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
