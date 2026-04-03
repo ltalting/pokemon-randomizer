@@ -64,7 +64,7 @@ jobs:
         - run: |
             mkdir -p ./original
             mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
-            wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
+            wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.EMERALD }}'
             unzip ./original/rom.zip -d ./original
             mv './original/${{ steps.variables.outputs.EXPECTEDFILE }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
         - name: Setup java
