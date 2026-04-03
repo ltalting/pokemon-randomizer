@@ -23,7 +23,7 @@ jobs:
             echo "extension = $EXTENSION"
             
             # Set expected file
-            EXPECTEDFILE = "Pokemon - Platinum Version (USA)${EXTENSION}"
+            EXPECTEDFILE="Pokemon - Platinum Version (USA)${EXTENSION}"
             echo "EXPECTEDFILE=${EXPECTEDFILE}" >> "$GITHUB_OUTPUT"
             echo "expected file = $EXPECTEDFILE"
 
