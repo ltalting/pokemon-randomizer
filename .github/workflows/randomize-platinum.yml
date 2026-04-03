@@ -21,6 +21,11 @@ jobs:
             EXTENSION=".nds"
             echo "EXTENSION=${EXTENSION}" >> "$GITHUB_OUTPUT"
             echo "extension = $EXTENSION"
+            
+            # Set expected file
+            EXPECTEDFILE = "Pokemon - Platinum Version (USA)${EXTENSION}"
+            echo "EXPECTEDFILE=${EXPECTEDFILE}" >> "$GITHUB_OUTPUT"
+            echo "expected file = $EXPECTEDFILE"
 
             # Generate datenow
             DATENOW="$(date +'%Y-%m-%d-%s.%N')"
@@ -61,7 +66,7 @@ jobs:
             mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
             wget -O ./original/rom.zip '${{ vars.BASEPATH }}${{ vars.PLATINUM }}'
             unzip ./original/rom.zip -d ./original
-            mv './original/Pokemon - Platinum Version (USA)${{ steps.variables.outputs.EXTENSION }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
+            mv './original/${{ steps.variables.outputs.EXPECTEDFILE }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
         - name: Setup java
           uses: actions/setup-java@v4
           with:
