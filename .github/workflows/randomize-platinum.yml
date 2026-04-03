@@ -41,7 +41,7 @@ jobs:
               # Otherwise, use input
               OUTFILENAME="${INPUTVAL}"
               # Update zip name as well
-              ZIPNAMENOEXT="randomized-${FLAVOR}${DATENOW}[${OUTFILENAME}]"
+              ZIPNAMENOEXT="[${OUTFILENAME}]randomized-${FLAVOR}${DATENOW}"
             fi
 
             # Set outfilename and zipname with their respective extensions
