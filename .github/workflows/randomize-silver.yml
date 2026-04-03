@@ -21,6 +21,14 @@ jobs:
             EXTENSION=".gbc"
             echo "EXTENSION=${EXTENSION}" >> "$GITHUB_OUTPUT"
             echo "extension = $EXTENSION"
+
+            #Set out extension
+            OUTEXTENSION="${EXTENSION}"
+            if [[ $EXTENSION == ".gb" ]]; then
+              OUTEXTENSION=".gbc"
+            fi
+            echo "OUTEXTENSION=${OUTEXTENSION}" >> "$GITHUB_OUTPUT"
+            echo "out extension = $OUTEXTENSION"
             
             # Set expected file
             EXPECTEDFILE="Pokemon - Silver Version (USA, Europe) (SGB Enhanced) (GB Compatible)${EXTENSION}"
@@ -50,7 +58,7 @@ jobs:
             fi
 
             # Set outfilename and zipname with their respective extensions
-            OUTFILENAME="${OUTFILENAME}${EXTENSION}"
+            OUTFILENAME="${OUTFILENAME}${OUTEXTENSION}"
             ZIPNAME="${ZIPNAMENOEXT}.zip"
             
             echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
