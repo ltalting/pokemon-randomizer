@@ -31,7 +31,7 @@ jobs:
             echo "out extension = $OUTEXTENSION"
             
             # Set expected file
-            EXPECTEDFILE="Pokemon - Platinum Version (USA)${EXTENSION}"
+            EXPECTEDFILE="Pokemon Omega Ruby (USA) (En,Ja,Fr,De,Es,It,Ko) (Rev 2) (3DS)${EXTENSION}"
             echo "EXPECTEDFILE=${EXPECTEDFILE}" >> "$GITHUB_OUTPUT"
             echo "expected file = $EXPECTEDFILE"
 
