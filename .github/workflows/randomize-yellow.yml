@@ -18,7 +18,7 @@ jobs:
             echo "flavor = $FLAVOR"
 
             # Set extension
-            EXTENSION=".gb"
+            EXTENSION=".gbc"
             echo "EXTENSION=${EXTENSION}" >> "$GITHUB_OUTPUT"
             echo "extension = $EXTENSION"
             
