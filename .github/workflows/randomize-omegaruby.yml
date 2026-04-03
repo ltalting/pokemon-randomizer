@@ -26,6 +26,8 @@ jobs:
             OUTEXTENSION="${EXTENSION}"
             if [[ $EXTENSION == ".gb" ]]; then
               OUTEXTENSION=".gbc"
+            elif [[ $EXTENSION == ".3ds" ]]; then
+              OUTEXTENSION=".cxi"
             fi
             echo "OUTEXTENSION=${OUTEXTENSION}" >> "$GITHUB_OUTPUT"
             echo "out extension = $OUTEXTENSION"
