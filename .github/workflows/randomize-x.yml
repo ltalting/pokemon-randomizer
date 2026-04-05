@@ -1,0 +1,149 @@
+name: Create Randomized X
+on: 
+  workflow_dispatch:
+    inputs:
+      "Output File Name":
+        description: "The name of the file containing the randomized rom"
+
+jobs:
+    create-randomized-x:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Generate execution variables
+          id: variables
+          run: |
+            # Set flavor
+            FLAVOR="x"
+            echo "FLAVOR=${FLAVOR}" >> "$GITHUB_OUTPUT"
+            echo "flavor = $FLAVOR"
+
+            # Set extension
+            EXTENSION=".3ds"
+            echo "EXTENSION=${EXTENSION}" >> "$GITHUB_OUTPUT"
+            echo "extension = $EXTENSION"
+
+            #Set out extension
+            OUTEXTENSION="${EXTENSION}"
+            if [[ $EXTENSION == ".gb" ]]; then
+              OUTEXTENSION=".gbc"
+            elif [[ $EXTENSION == ".3ds" ]]; then
+              OUTEXTENSION=".cxi"
+            fi
+            echo "OUTEXTENSION=${OUTEXTENSION}" >> "$GITHUB_OUTPUT"
+            echo "out extension = $OUTEXTENSION"
+            
+            # Set expected file
+            EXPECTEDFILE="Pokemon X (USA) (En,Ja,Fr,De,Es,It,Ko)${EXTENSION}"
+            echo "EXPECTEDFILE=${EXPECTEDFILE}" >> "$GITHUB_OUTPUT"
+            echo "expected file = $EXPECTEDFILE"
+
+            # Generate datenow
+            DATENOW="$(date +'%Y-%m-%d-%s.%N')"
+            echo "DATENOW=${DATENOW}" >> "$GITHUB_OUTPUT"
+            echo "date now = $DATENOW"
+
+            # Generate zipname
+            ZIPNAMENOEXT="randomized-${FLAVOR}${DATENOW}"
+            ZIPNAME="${ZIPNAMENOEXT}.7z"
+            # Initialize outfilename
+            OUTFILENAME=""
+            # Handle outputfilename input
+            INPUTVAL="${{ github.event.inputs['Output File Name'] }}"
+            # If input is empty, use zipname
+            if [ -z "$INPUTVAL" ]; then
+              OUTFILENAME="${ZIPNAMENOEXT}"
+            else
+              # Otherwise, use input
+              OUTFILENAME="${INPUTVAL}"
+              # Update zip name as well
+              ZIPNAMENOEXT="[${OUTFILENAME}]randomized-${FLAVOR}${DATENOW}"
+            fi
+
+            # Set outfilename and zipname with their respective extensions
+            OUTFILENAME="${OUTFILENAME}${OUTEXTENSION}"
+            ZIPNAME="${ZIPNAMENOEXT}.7z"
+            
+            echo "OUTFILENAME=$OUTFILENAME" >> "$GITHUB_OUTPUT"
+            echo "out file name = $OUTFILENAME"
+            echo "ZIPNAME=$ZIPNAME" >> "$GITHUB_OUTPUT"
+            echo "zip name = $ZIPNAME"
+            echo "ZIPNAMENOEXT=$ZIPNAMENOEXT" >> "$GITHUB_OUTPUT"
+            echo "zip name no extension = $ZIPNAMENOEXT"
+
+        - uses: actions/checkout@v4
+        - run: |
+            mkdir -p ./original
+            mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
+            wget -O ./original/rom.7z '${{ vars.BASEPATH }}${{ vars.OMEGARUBY }}'
+            7z x ./original/rom.7z -o./original
+            mv './original/${{ steps.variables.outputs.EXPECTEDFILE }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
+        - name: Setup java
+          uses: actions/setup-java@v4
+          with:
+            distribution: 'oracle'
+            java-version: '21'
+        - run: java -jar ./universalpokemonrandomizer/PokeRandoZX.jar cli -i ./original/rom${{ steps.variables.outputs.EXTENSION }} -o ./randomized/${{ steps.variables.outputs.OUTFILENAME }} -s ./universalpokemonrandomizer/Original_Settings_gen1-6.rnqs -l
+        - run: ls -la ./randomized
+        - run: cd ./randomized && zip ${{ steps.variables.outputs.ZIPNAME }} ${{ steps.variables.outputs.OUTFILENAME }} && rm -f ${{ steps.variables.outputs.OUTFILENAME }}
+        - run: |
+            rm -rf ./original
+            mv ./randomized/${{ steps.variables.outputs.OUTFILENAME }}.log ./randomized/${{ steps.variables.outputs.FLAVOR }}/${{ steps.variables.outputs.ZIPNAMENOEXT }}.log
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.11'
+        
+        - name: Install dependencies
+          run: pip install google-api-python-client google-auth
+        - run: ls -la
+        - name: Upload to Google Drive
+          env:
+            FOLDER_ID: ${{ secrets.OMEGA_RUBY_FOLDER_ID }}
+            REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+            CLIENT_ID: ${{ secrets.CLIENT_ID }}
+            CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+            ZIP_NAME: ${{ steps.variables.outputs.ZIPNAME }}
+          run: |
+            python << 'EOF'
+            import os
+            from google.oauth2.credentials import Credentials
+            from googleapiclient.discovery import build
+            from googleapiclient.http import MediaFileUpload
+
+            creds = Credentials(
+                token = None,
+                refresh_token = os.environ.get("REFRESH_TOKEN"),
+                token_uri = "https://oauth2.googleapis.com/token",
+                client_id = os.environ.get("CLIENT_ID"),
+                client_secret = os.environ.get("CLIENT_SECRET"),
+                scopes = ["https://www.googleapis.com/auth/drive"]
+            )
+
+            service = build("drive", "v3", credentials=creds)
+
+            zip_name = os.environ.get("ZIP_NAME")
+
+            file_metadata = {
+                "name": zip_name,
+                "parents": [os.environ.get("FOLDER_ID")] if os.environ.get("FOLDER_ID") else []
+            }
+
+            folder = service.files().get(
+                fileId = os.environ.get("FOLDER_ID") if os.environ.get("FOLDER_ID") else "",
+                fields = "id, name, mimeType"
+            ).execute()
+
+            media = MediaFileUpload("./randomized/" + zip_name, mimetype = "application/zip")
+
+            service.files().create(
+                body = file_metadata,
+                media_body = media,
+                fields = "id"
+            ).execute()
+            EOF
+        - run: rm -f ./randomized/${{ steps.variables.outputs.ZIPNAME }}
+        - name: Commit & Push changes
+          uses: actions-js/push@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: 'main'
