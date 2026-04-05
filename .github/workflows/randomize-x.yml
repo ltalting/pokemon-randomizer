@@ -74,7 +74,7 @@ jobs:
         - run: |
             mkdir -p ./original
             mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
-            wget -O ./original/rom.7z '${{ vars.BASEPATH }}${{ vars.OMEGARUBY }}'
+            wget -O ./original/rom.7z '${{ vars.BASEPATH }}${{ vars.X }}'
             7z x ./original/rom.7z -o./original
             mv './original/${{ steps.variables.outputs.EXPECTEDFILE }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
         - name: Setup java
@@ -98,7 +98,7 @@ jobs:
         - run: ls -la
         - name: Upload to Google Drive
           env:
-            FOLDER_ID: ${{ secrets.OMEGA_RUBY_FOLDER_ID }}
+            FOLDER_ID: ${{ secrets.X_FOLDER_ID }}
             REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
             CLIENT_ID: ${{ secrets.CLIENT_ID }}
             CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
