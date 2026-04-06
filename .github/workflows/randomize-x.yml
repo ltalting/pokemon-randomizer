@@ -76,6 +76,7 @@ jobs:
             mkdir -p ./randomized/${{ steps.variables.outputs.FLAVOR }}
             wget -O ./original/rom.7z '${{ vars.BASEPATH }}${{ vars.X }}'
             7z x ./original/rom.7z -o./original
+            ls -la
             mv './original/${{ steps.variables.outputs.EXPECTEDFILE }}' ./original/rom${{ steps.variables.outputs.EXTENSION }}
         - name: Setup java
           uses: actions/setup-java@v4
