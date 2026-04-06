@@ -96,7 +96,7 @@ jobs:
         
         - name: Install dependencies
           run: pip install google-api-python-client google-auth
-        - run: ls -la && ls =la ./original
+        - run: ls -la
         - name: Upload to Google Drive
           env:
             FOLDER_ID: ${{ secrets.X_FOLDER_ID }}
