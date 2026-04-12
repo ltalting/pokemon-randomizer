@@ -6,14 +6,14 @@ on:
         description: "The name of the file containing the randomized rom"
 
 jobs:
-    create-randomized-omega-ruby:
+    create-randomized-alpha-saphhire:
       runs-on: ubuntu-latest
       steps:
         - name: Generate execution variables
           id: variables
           run: |
             # Set flavor
-            FLAVOR="omegaruby"
+            FLAVOR="alphasapphire"
             echo "FLAVOR=${FLAVOR}" >> "$GITHUB_OUTPUT"
             echo "flavor = $FLAVOR"
 
