@@ -1,3 +1,4 @@
+from datetime import datetime
 from json import dumps
 from os import environ
 from pathlib import Path
@@ -61,6 +62,11 @@ def randomize_rom(rom_file_meta: Union[FileLike, DirectoryMetadata]):
             log_msg(f"{option}) {setting_name}", "blue", 1)
         selected_setting_index = int(ask_question("Which setting would you like to randomize with? ", valid_answers)) - 1
         settings_path = settings.path / settings_options[selected_setting_index]
+        rom_file_name = ask_question("What would you like to name the file?", color = "blue")
+        if rom_file_name == "":
+            rom_file_name = (rom_file_meta.name + datetime.now().isoformat(timespec='milliseconds')).replace(" ", "").replace(":", ".")
+        output_location = Path(ROOT) / "randomized" / rom_file_name
+        print(output_location)
         command = [
             "java",
             "-jar",
@@ -69,7 +75,7 @@ def randomize_rom(rom_file_meta: Union[FileLike, DirectoryMetadata]):
             "-i",
             str(rom_file_meta.path),
             "-o",
-            f"{ROOT + r'/randomized/outfile'}",
+            output_location,
             "-s",
             str(settings_path), 
             "-l"
