@@ -2,3 +2,4 @@ original/*
 *.code-workspace
 admin/*
 universalpokemonrandomizer/config.ini
+.env
