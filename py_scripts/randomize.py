@@ -95,6 +95,9 @@ originals_files_printable = "\n".join(
 
 log_msg(originals_files_printable, "green")
 
+# Ensure randomized folder
+Path("./randomized").mkdir(parents = True, exist_ok = True)
+
 # main
 valid_answers = (range(1, total_files), True)
 one_or_all = ask_question("Submit a number to randomize a specific file or press Enter to step through list:", valid_answers, "blue")
